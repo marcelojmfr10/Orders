@@ -44,3 +44,4 @@ namespace Orders.Frontend.Repositories
             return $"Ha ocurrido un error inesperado: {(int)statusCode} {statusCode}. Detalles: {content}";
         }
     }
+}
