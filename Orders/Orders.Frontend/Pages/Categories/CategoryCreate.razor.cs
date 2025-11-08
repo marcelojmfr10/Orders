@@ -3,20 +3,20 @@ using Microsoft.AspNetCore.Components;
 using Orders.Frontend.Repositories;
 using Orders.Shared.Entities;
 
-namespace Orders.Frontend.Pages.Countries
+namespace Orders.Frontend.Pages.Categories
 {
-    public partial class CountryCreate
+    public partial class CategoryCreate
     {
-        private Country country = new Country();
-        private CountryForm? countryForm;
+        private Category category = new Category();
+        private CategoryForm? categoryForm;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
 
         private async Task CreateAsync()
         {
-            var responseHttp = await Repository.PostAsync("/api/countries", country);
-            if(responseHttp.Error)
+            var responseHttp = await Repository.PostAsync("/api/categories", category);
+            if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
@@ -36,8 +36,8 @@ namespace Orders.Frontend.Pages.Countries
 
         private void Return()
         {
-            countryForm!.FormPostedSuccessfully = true;
-            NavigationManager.NavigateTo("/countries");
+            categoryForm!.FormPostedSuccessfully = true;
+            NavigationManager.NavigateTo("/categories");
         }
     }
 }
