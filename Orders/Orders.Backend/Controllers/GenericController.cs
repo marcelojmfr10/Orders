@@ -31,7 +31,7 @@ namespace Orders.Backend.Controllers
             {
                 return Ok(action.Result);
             }
-            return NotFound();
+            return NotFound(action.Message);
         }
 
         [HttpPost]

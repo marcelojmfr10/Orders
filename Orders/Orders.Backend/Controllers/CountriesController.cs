@@ -11,6 +11,8 @@ namespace Orders.Backend.Controllers
     //public class CountriesController : ControllerBase
     public class CountriesController : GenericController<Country>
     {
+        private readonly ICountriesUnitOfWork _countriesUnitOfWork;
+
         //private readonly DataContext _context;
 
         //public CountriesController(DataContext context)
@@ -62,8 +64,31 @@ namespace Orders.Backend.Controllers
         //    await _context.SaveChangesAsync();
         //    return NoContent();
         //}
-        public CountriesController(IGenericUnitOfWork<Country> unitOfWork) : base(unitOfWork)
+        public CountriesController(IGenericUnitOfWork<Country> unitOfWork, ICountriesUnitOfWork countriesUnitOfWork) : base(unitOfWork)
         {
+            _countriesUnitOfWork = countriesUnitOfWork;
+        }
+
+        [HttpGet]
+        public override async Task<ActionResult> GetAsync()
+        {
+            var action = await _countriesUnitOfWork.GetAsync();
+            if (action.WasSuccess)
+            {
+                return Ok(action.Result);
+            }
+            return BadRequest();
+        }
+
+        [HttpGet("{id}")]
+        public override async Task<ActionResult> GetAsync(int id)
+        {
+            var action = await _countriesUnitOfWork.GetAsync(id);
+            if (action.WasSuccess)
+            {
+                return Ok(action.Result);
+            }
+            return NotFound(action.Message);
         }
     }
 }
