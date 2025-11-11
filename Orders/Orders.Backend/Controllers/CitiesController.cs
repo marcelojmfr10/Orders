@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Orders.Backend.UnitsOfWork.Implementations;
 using Orders.Backend.UnitsOfWork.Interfaces;
+using Orders.Shared.DTOs;
 using Orders.Shared.Entities;
 
 namespace Orders.Backend.Controllers
@@ -8,8 +10,34 @@ namespace Orders.Backend.Controllers
     [Route("api/[controller]")]
     public class CitiesController : GenericController<City>
     {
-        public CitiesController(IGenericUnitOfWork<City> unitOfWork) : base(unitOfWork)
+        private readonly ICitiesUnitOfWork _citiesUnitOfWork;
+
+        public CitiesController(IGenericUnitOfWork<City> unitOfWork, ICitiesUnitOfWork citiesUnitOfWork) : base(unitOfWork)
         {
+            _citiesUnitOfWork = citiesUnitOfWork;
+        }
+
+        // this, estándar moderno solo lo permite en los métodos de extensión
+        [HttpGet()]
+        public override async Task<ActionResult> GetAsync([FromQuery] PaginationDTO pagination)
+        {
+            var action = await _citiesUnitOfWork.GetAsync(pagination);
+            if (action.WasSuccess)
+            {
+                return Ok(action.Result);
+            }
+            return BadRequest();
+        }
+
+        [HttpGet("totalPages")]
+        public override async Task<ActionResult> GetPagesAsync([FromQuery] PaginationDTO pagination)
+        {
+            var action = await _citiesUnitOfWork.GetTotalPagesAsync(pagination);
+            if (action.WasSuccess)
+            {
+                return Ok(action.Result);
+            }
+            return BadRequest();
         }
     }
 }
