@@ -3,11 +3,15 @@ using Microsoft.AspNetCore.Components;
 using Orders.Frontend.Repositories;
 using Orders.Shared.Entities;
 using System.Net;
+using System.Runtime.CompilerServices;
 
 namespace Orders.Frontend.Pages.States
 {
     public partial class StateDetails
     {
+        private int currentPage = 1;
+        private int totalPages;
+        private List<City>? cities;
         private State? state;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
@@ -19,7 +23,51 @@ namespace Orders.Frontend.Pages.States
             await LoadAsync();
         }
 
-        private async Task LoadAsync()
+        private async Task SelectedPageAsync(int page)
+        {
+            currentPage = page;
+            await LoadAsync(page);
+        }
+
+        private async Task LoadAsync(int page = 1)
+        {
+            var ok = await LoadStateAsync();
+            if (ok)
+            {
+                ok = await LoadCitiesAsync(page);
+                if (ok)
+                {
+                    await LoadPagesAsync();
+                }
+            }
+        }
+
+        private async Task LoadPagesAsync()
+        {
+            var responseHttp = await Repository.GetAsync<int>($"api/cities/totalPages?id={StateId}");
+            if (responseHttp.Error)
+            {
+                var message = await responseHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return;
+            }
+            totalPages = responseHttp.Response;
+        }
+
+        private async Task<bool> LoadCitiesAsync(int page)
+        {
+            var responseHttp = await Repository.GetAsync<List<City>>($"api/cities?id={StateId}&page={page}");
+            if (responseHttp.Error)
+            {
+                var message = await responseHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return false;
+            }
+            cities = responseHttp.Response;
+            return true;
+        }
+
+        private async Task<bool> LoadStateAsync()
         {
             var responseHttp = await Repository.GetAsync<State>($"/api/states/{StateId}");
             if (responseHttp.Error)
@@ -27,16 +75,16 @@ namespace Orders.Frontend.Pages.States
                 if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
                 {
                     NavigationManager.NavigateTo("/countries");
+                    return false;
                 }
-                else
-                {
-                    var message = await responseHttp.GetErrorMessageAsync();
-                    await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
-                }
-                return;
+
+                var message = await responseHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return false;
             }
 
             state = responseHttp.Response;
+            return true;
         }
 
         private async Task DeleteAsync(City city)

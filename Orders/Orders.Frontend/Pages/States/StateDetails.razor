@@ -12,18 +12,21 @@ else
         <a class="btn btn-success" href="/countries/details/@state.CountryId">Regresar</a>
     </div>
 
-    <h4>Estados/Departamentos</h4>
-    <GenericList MyList="state.Cities!.ToList()">
+    <h4>Ciudades</h4>
+    <GenericList MyList="cities!">
         <Body>
+
+            <Pagination CurrentPage="currentPage" TotalPages="totalPages" SelectedPage="SelectedPageAsync" />
+
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>Ciudad</th>
-                        <th></th>
+                        <th style="width:140px"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var city in state.Cities!)
+                    @foreach (var city in cities!)
                     {
                         <tr>
                             <td>@city.Name</td>
