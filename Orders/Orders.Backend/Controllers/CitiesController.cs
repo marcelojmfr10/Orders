@@ -20,6 +20,13 @@ namespace Orders.Backend.Controllers
             _citiesUnitOfWork = citiesUnitOfWork;
         }
 
+        [AllowAnonymous]
+        [HttpGet("combo/{stateId:int}")]
+        public async Task<IActionResult> GetComboAsync(int stateId)
+        {
+            return Ok(await _citiesUnitOfWork.GetComboAsync(stateId));
+        }
+
         // this, estándar moderno solo lo permite en los métodos de extensión
         [HttpGet()]
         public override async Task<ActionResult> GetAsync([FromQuery] PaginationDTO pagination)
