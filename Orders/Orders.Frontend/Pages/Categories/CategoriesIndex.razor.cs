@@ -19,10 +19,19 @@ namespace Orders.Frontend.Pages.Categories
         public List<Category>? Categories { get; set; }
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
+        [Parameter, SupplyParameterFromQuery] public int RecordsNumber { get; set; } = 10;
 
         protected async override Task OnInitializedAsync()
         {
             await LoadAsync();
+        }
+
+        private async Task SelectedRecordsNumberAsync(int recordsnumber)
+        {
+            RecordsNumber = recordsnumber;
+            int page = 1;
+            await LoadAsync(page);
+            await SelectedPageAsync(page);
         }
 
         private async Task FilterCallback(string filter)
@@ -43,6 +52,14 @@ namespace Orders.Frontend.Pages.Categories
             await LoadAsync(page);
         }
 
+        private void ValidateRecordsNumber()
+        {
+            if (RecordsNumber == 0)
+            {
+                RecordsNumber = 10;
+            }
+        }
+
         private async Task LoadAsync(int page = 1)
         {
             var ok = await LoadListAsync(page);
@@ -54,7 +71,8 @@ namespace Orders.Frontend.Pages.Categories
 
         private async Task<bool> LoadListAsync(int page)
         {
-            var url = $"api/categories?page={page}";
+            ValidateRecordsNumber();
+            var url = $"api/categories?page={page}&recordsnumber={RecordsNumber}";
             if (!string.IsNullOrEmpty(Filter))
             {
                 url += $"&filter={Filter}";
@@ -73,7 +91,8 @@ namespace Orders.Frontend.Pages.Categories
 
         private async Task LoadPagesAsync()
         {
-            var url = "api/categories/totalPages";
+            ValidateRecordsNumber();
+            var url = $"api/categories/totalPages?recordsnumber={RecordsNumber}";
             if (!string.IsNullOrEmpty(Filter))
             {
                 url += $"?filter={Filter}";
