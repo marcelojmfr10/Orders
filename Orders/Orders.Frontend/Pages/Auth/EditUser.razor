@@ -12,7 +12,7 @@ else
         <div class="card">
             <div class="card-header">
                 <i class="bi bi-person" /> Editar Usuario
-                <a class="btn btn-secondary btn-sm float-end" href="/changePassword"><i class="bi bi-key" /> Cambiar Contraseña</a>
+                <a class="btn btn-secondary btn-sm float-end" @onclick=@(() => ShowModal())><i class="bi bi-key" /> Cambiar Contraseña</a>
                 <button class="btn btn-primary btn-sm float-end mx-2" type="submit"><i class="bi bi-person-add" /> Guardar</button>
             </div>
             <div class="card-body">
