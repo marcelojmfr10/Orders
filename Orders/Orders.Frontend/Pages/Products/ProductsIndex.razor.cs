@@ -96,7 +96,7 @@ namespace Orders.Frontend.Pages.Products
         private async Task LoadPagesAsync()
         {
             ValidateRecordsNumber(RecordsNumber);
-            var url = $"api/products/totalPages?recordsnumber{RecordsNumber}";
+            var url = $"api/products/totalPages?recordsnumber={RecordsNumber}";
             if (!string.IsNullOrEmpty(Filter))
             {
                 url += $"&filter={Filter}";
@@ -150,6 +150,14 @@ namespace Orders.Frontend.Pages.Products
             }
 
             await LoadAsync(1);
+            var toast = SweetAlertService.Mixin(new SweetAlertOptions
+            {
+                Toast = true,
+                Position = SweetAlertPosition.BottomEnd,
+                ShowConfirmButton = true,
+                Timer = 3000
+            });
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro borrado con éxito.");
         }
     }
 }
