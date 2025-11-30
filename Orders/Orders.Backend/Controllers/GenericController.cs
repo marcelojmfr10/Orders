@@ -14,7 +14,7 @@ namespace Orders.Backend.Controllers
         }
 
         [HttpGet("full")]
-        public virtual async Task<ActionResult> GetAsync()
+        public virtual async Task<IActionResult> GetAsync()
         {
             var action = await _unitOfWork.GetAsync();
             if (action.WasSuccess)
@@ -25,7 +25,7 @@ namespace Orders.Backend.Controllers
         }
 
         [HttpGet()]
-        public virtual async Task<ActionResult> GetAsync([FromQuery] PaginationDTO pagination)
+        public virtual async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
         {
             var action = await _unitOfWork.GetAsync(pagination);
             if (action.WasSuccess)
@@ -36,7 +36,7 @@ namespace Orders.Backend.Controllers
         }
 
         [HttpGet("totalPages")]
-        public virtual async Task<ActionResult> GetPagesAsync([FromQuery] PaginationDTO pagination)
+        public virtual async Task<IActionResult> GetPagesAsync([FromQuery] PaginationDTO pagination)
         {
             var action = await _unitOfWork.GetTotalPagesAsync(pagination);
             if (action.WasSuccess)
@@ -47,7 +47,7 @@ namespace Orders.Backend.Controllers
         }
 
         [HttpGet("{id}")]
-        public virtual async Task<ActionResult> GetAsync(int id)
+        public virtual async Task<IActionResult> GetAsync(int id)
         {
             var action = await _unitOfWork.GetAsync(id);
             if (action.WasSuccess)
@@ -58,7 +58,7 @@ namespace Orders.Backend.Controllers
         }
 
         [HttpPost]
-        public virtual async Task<ActionResult> PostAsync(T model)
+        public virtual async Task<IActionResult> PostAsync(T model)
         {
             var action = await _unitOfWork.AddAsync(model);
             if (action.WasSuccess)
@@ -69,7 +69,7 @@ namespace Orders.Backend.Controllers
         }
 
         [HttpPut]
-        public virtual async Task<ActionResult> PutAsync(T model)
+        public virtual async Task<IActionResult> PutAsync(T model)
         {
             var action = await _unitOfWork.UpdateAsync(model);
             if (action.WasSuccess)
@@ -80,7 +80,7 @@ namespace Orders.Backend.Controllers
         }
 
         [HttpDelete("{id}")]
-        public virtual async Task<ActionResult> DeleteAsync(int id)
+        public virtual async Task<IActionResult> DeleteAsync(int id)
         {
             var action = await _unitOfWork.DeleteAsync(id);
             if (action.WasSuccess)

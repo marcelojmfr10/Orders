@@ -28,7 +28,7 @@ namespace Orders.Backend.Controllers
         }
 
         [HttpGet("full")]
-        public override async Task<ActionResult> GetAsync()
+        public override async Task<IActionResult> GetAsync()
         {
             var action = await _statesUnitOfWork.GetAsync();
             if (action.WasSuccess)
@@ -39,7 +39,7 @@ namespace Orders.Backend.Controllers
         }
 
         [HttpGet()]
-        public override async Task<ActionResult> GetAsync([FromQuery] PaginationDTO pagination)
+        public override async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
         {
             var action = await _statesUnitOfWork.GetAsync(pagination);
             if (action.WasSuccess)
@@ -50,7 +50,7 @@ namespace Orders.Backend.Controllers
         }
 
         [HttpGet("totalPages")]
-        public override async Task<ActionResult> GetPagesAsync([FromQuery] PaginationDTO pagination)
+        public override async Task<IActionResult> GetPagesAsync([FromQuery] PaginationDTO pagination)
         {
             var action = await _statesUnitOfWork.GetTotalPagesAsync(pagination);
             if (action.WasSuccess)
@@ -61,7 +61,7 @@ namespace Orders.Backend.Controllers
         }
 
         [HttpGet("{id}")]
-        public override async Task<ActionResult> GetAsync(int id)
+        public override async Task<IActionResult> GetAsync(int id)
         {
             var action = await _statesUnitOfWork.GetAsync(id);
             if (action.WasSuccess)

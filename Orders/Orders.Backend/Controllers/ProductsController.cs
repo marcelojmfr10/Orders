@@ -20,7 +20,7 @@ namespace Orders.Backend.Controllers
         }
 
         [HttpDelete("{id}")]
-        public override async Task<ActionResult> DeleteAsync(int id)
+        public override async Task<IActionResult> DeleteAsync(int id)
         {
             var response = await _productsUnitOfWork.DeleteAsync(id);
             if (!response.WasSuccess)
@@ -52,8 +52,9 @@ namespace Orders.Backend.Controllers
             return BadRequest(response.Message);
         }
 
+        [AllowAnonymous]
         [HttpGet]
-        public override async Task<ActionResult> GetAsync([FromQuery] PaginationDTO pagination)
+        public override async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
         {
             var response = await _productsUnitOfWork.GetAsync(pagination);
             if (response.WasSuccess)
@@ -63,8 +64,9 @@ namespace Orders.Backend.Controllers
             return BadRequest();
         }
 
+        [AllowAnonymous]
         [HttpGet("totalPages")]
-        public override async Task<ActionResult> GetPagesAsync([FromQuery] PaginationDTO pagination)
+        public override async Task<IActionResult> GetPagesAsync([FromQuery] PaginationDTO pagination)
         {
             var response = await _productsUnitOfWork.GetTotalPagesAsync(pagination);
             if (response.WasSuccess)
@@ -74,8 +76,9 @@ namespace Orders.Backend.Controllers
             return BadRequest();
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
-        public override async Task<ActionResult> GetAsync(int id)
+        public override async Task<IActionResult> GetAsync(int id)
         {
             var response = await _productsUnitOfWork.GetAsync(id);
             if (response.WasSuccess)
@@ -86,7 +89,7 @@ namespace Orders.Backend.Controllers
         }
 
         [HttpPost("full")]
-        public async Task<ActionResult> PostFullAsync(ProductDTO productDTO)
+        public async Task<IActionResult> PostFullAsync(ProductDTO productDTO)
         {
             var response = await _productsUnitOfWork.AddFullAsync(productDTO);
             if (response.WasSuccess)
@@ -97,7 +100,7 @@ namespace Orders.Backend.Controllers
         }
 
         [HttpPut("full")]
-        public async Task<ActionResult> PutFullAsync(ProductDTO productDTO)
+        public async Task<IActionResult> PutFullAsync(ProductDTO productDTO)
         {
             var response = await _productsUnitOfWork.UpdateFullAsync(productDTO);
             if (response.WasSuccess)
