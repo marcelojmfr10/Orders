@@ -80,6 +80,9 @@ builder.Services.AddScoped<IProductsUnitOfWork, ProductsUnitOfWork>();
 builder.Services.AddScoped<IStatesRepository, StatesRepository>();
 builder.Services.AddScoped<IStatesUnitOfWork, StatesUnitOfWork>();
 
+builder.Services.AddScoped<ITemporalOrdersRepository, TemporalOrdersRepository>();
+builder.Services.AddScoped<ITemporalOrdersUnitOfWork, TemporalOrdersUnitOfWork>();
+
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<IUsersUnitOfWork, UsersUnitOfWork>();
 

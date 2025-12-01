@@ -43,7 +43,9 @@ namespace Orders.Shared.Entities
         [Display(Name = "Imágenes")]
         public int ProductImagesNumber => ProductImages == null || ProductImages.Count == 0 ? 0 : ProductImages.Count;
 
-        [Display(Name = "Imágen")]
+        [Display(Name = "Imagen")]
         public string MainImage => ProductImages == null || ProductImages.Count == 0 ? string.Empty : ProductImages.FirstOrDefault()!.Image;
+
+        public ICollection<TemporalOrder>? TemporalOrders { get; set; }
     }
 }
