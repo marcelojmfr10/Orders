@@ -25,7 +25,7 @@ namespace Orders.Frontend.Pages
         [Inject] private IRepository Repository { get; set; } = null!;
         [Parameter, SupplyParameterFromQuery] public int RecordsNumber { get; set; } = 8;
 
-        [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; } = null!;
+        [CascadingParameter] private Task<AuthenticationState> AuthenticationStateTask { get; set; } = null!;
         [CascadingParameter] private IModalService Modal { get; set; } = default!;
 
         protected override async Task OnInitializedAsync()
@@ -41,7 +41,7 @@ namespace Orders.Frontend.Pages
 
         private async Task CheckIsAuthenticatedAsync()
         {
-            var authenticationState = await authenticationStateTask;
+            var authenticationState = await AuthenticationStateTask;
             isAuthenticated = authenticationState.User.Identity!.IsAuthenticated;
         }
 
