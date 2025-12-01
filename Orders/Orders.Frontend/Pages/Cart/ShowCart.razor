@@ -24,7 +24,17 @@ else
                             <h3>Valor: <strong>@($"{sumValue:C2}")</strong></h3>
                         </div>
                     </div>
-                    <button class="btn btn-primary mb-3" type="submit"><i class="bi bi-check" /> Confirmar Pedido</button>
+                    <EditForm Model="OrderDTO" OnValidSubmit="ConfirmOrderAsync">
+                        <DataAnnotationsValidator />
+                        <div class="mb-3">
+                            <label>Comentarios:</label>
+                            <div>
+                                <InputText class="form-control" @bind-Value="@OrderDTO.Remarks" />
+                                <ValidationMessage For="@(() => OrderDTO.Remarks)" />
+                            </div>
+                        </div>
+                        <button class="btn btn-primary mb-3" type="submit"><i class="bi bi-check" /> Confirmar Pedido</button>
+                    </EditForm>
                     <table class="table table-striped">
                         <thead>
                             <tr>
