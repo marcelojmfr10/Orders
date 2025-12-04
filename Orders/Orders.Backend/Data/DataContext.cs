@@ -8,7 +8,7 @@ namespace Orders.Backend.Data
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-            
+            Database.SetCommandTimeout(600);   
         }
 
         public DbSet<Category> Categories { get; set; }
